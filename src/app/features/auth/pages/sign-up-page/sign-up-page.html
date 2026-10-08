@@ -1,0 +1,54 @@
+<main class="mx-auto flex min-h-dvh max-w-sm flex-col justify-center gap-6 p-4">
+  <h1 class="text-2xl font-medium">Crear una cuenta</h1>
+
+  <form class="flex flex-col gap-2" [formRoot]="signUpForm">
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput autocomplete="given-name" [formField]="signUpForm.firstName" />
+      <mat-error>{{ signUpForm.firstName().errors()[0]?.message }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Apellido</mat-label>
+      <input matInput autocomplete="family-name" [formField]="signUpForm.lastName" />
+      <mat-error>{{ signUpForm.lastName().errors()[0]?.message }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Correo</mat-label>
+      <input matInput type="email" autocomplete="email" [formField]="signUpForm.email" />
+      <mat-error>{{ signUpForm.email().errors()[0]?.message }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Teléfono (opcional)</mat-label>
+      <input matInput type="tel" autocomplete="tel" [formField]="signUpForm.phoneNumber" />
+      <mat-error>{{ signUpForm.phoneNumber().errors()[0]?.message }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Contraseña</mat-label>
+      <input
+        matInput
+        type="password"
+        autocomplete="new-password"
+        [formField]="signUpForm.password"
+      />
+      <mat-hint>Mínimo 8 caracteres, con mayúscula, minúscula, número y símbolo.</mat-hint>
+      <mat-error>{{ signUpForm.password().errors()[0]?.message }}</mat-error>
+    </mat-form-field>
+
+    @if (errorMessage(); as message) {
+      <p class="error-message" role="alert">{{ message }}</p>
+    }
+
+    <button mat-flat-button type="submit" [disabled]="signUpForm().submitting()">
+      Crear cuenta
+    </button>
+  </form>
+
+  <p>
+    ¿Ya tienes cuenta?
+    <a routerLink="/auth/sign-in" [queryParams]="{ returnUrl: returnUrl() }">Iniciar sesión</a>
+  </p>
+</main>

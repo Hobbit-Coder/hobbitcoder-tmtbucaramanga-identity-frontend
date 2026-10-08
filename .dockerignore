@@ -1,0 +1,10 @@
+# Solo el código fuente entra al contexto de construcción.
+node_modules/
+dist/
+.angular/
+.git/
+.vscode/
+.codex/
+Dockerfile
+.dockerignore
+*.md

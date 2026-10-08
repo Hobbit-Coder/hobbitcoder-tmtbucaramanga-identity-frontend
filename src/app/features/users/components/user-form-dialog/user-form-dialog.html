@@ -1,0 +1,66 @@
+<h2 mat-dialog-title>{{ isCreate ? 'Nuevo usuario' : 'Editar usuario' }}</h2>
+
+<form [formRoot]="userForm">
+  <mat-dialog-content class="flex! flex-col gap-2">
+    <div class="grid gap-x-4 sm:grid-cols-2">
+      <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input matInput [formField]="userForm.firstName" />
+        <mat-error>{{ userForm.firstName().errors()[0]?.message }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Apellido</mat-label>
+        <input matInput [formField]="userForm.lastName" />
+        <mat-error>{{ userForm.lastName().errors()[0]?.message }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" [formField]="userForm.email" />
+        <mat-error>{{ userForm.email().errors()[0]?.message }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Teléfono (opcional)</mat-label>
+        <input matInput type="tel" [formField]="userForm.phoneNumber" />
+        <mat-error>{{ userForm.phoneNumber().errors()[0]?.message }}</mat-error>
+      </mat-form-field>
+    </div>
+
+    @if (isCreate) {
+      <mat-form-field>
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          type="password"
+          autocomplete="new-password"
+          [formField]="userForm.password"
+        />
+        <mat-hint>Mínimo 8 caracteres, con mayúscula, minúscula, número y símbolo.</mat-hint>
+        <mat-error>{{ userForm.password().errors()[0]?.message }}</mat-error>
+      </mat-form-field>
+    }
+
+    <mat-form-field>
+      <mat-label>Roles</mat-label>
+      <mat-select multiple [formField]="userForm.roles">
+        @for (role of data.roles; track role) {
+          <mat-option [value]="role">{{ role }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-slide-toggle [formField]="userForm.isActive">Activo</mat-slide-toggle>
+    <mat-slide-toggle [formField]="userForm.emailConfirmed">Correo confirmado</mat-slide-toggle>
+
+    @if (errorMessage(); as message) {
+      <p class="error-message" role="alert">{{ message }}</p>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close>Cancelar</button>
+    <button mat-flat-button type="submit" [disabled]="userForm().submitting()">Guardar</button>
+  </mat-dialog-actions>
+</form>

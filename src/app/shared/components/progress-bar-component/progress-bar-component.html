@@ -1,0 +1,8 @@
+@if (isVisible()) {
+  <mat-progress-bar
+    class="fixed! top-0 left-0 z-[1001] w-full"
+    aria-label="Cargando"
+    [mode]="progressBarService.progressBar().mode"
+    [color]="progressBarService.progressBar().color"
+  />
+}

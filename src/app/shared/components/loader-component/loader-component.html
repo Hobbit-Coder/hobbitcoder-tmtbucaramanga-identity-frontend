@@ -1,0 +1,10 @@
+@if (loaderService.isLoading()) {
+  <output
+    class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/30"
+    aria-live="polite"
+    aria-busy="true"
+  >
+    <span class="sr-only">Cargando contenido, por favor espere.</span>
+    <mat-progress-spinner mode="indeterminate" aria-hidden="true" />
+  </output>
+}
