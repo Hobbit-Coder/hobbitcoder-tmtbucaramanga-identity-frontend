@@ -1,0 +1,76 @@
+<app-auth-shell [showBrandPanel]="false">
+  <div class="flex items-center gap-2">
+    @if (step() === 0) {
+      <a
+        mat-icon-button
+        routerLink="/auth/sign-in"
+        [queryParams]="{ returnUrl: returnUrl() }"
+        aria-label="Volver al ingreso"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </a>
+    } @else {
+      <button mat-icon-button type="button" aria-label="Paso anterior" (click)="back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    }
+    <h1 class="m-0 text-lg font-semibold">Activa tu cuenta</h1>
+  </div>
+
+  <div class="mt-6"><app-step-progress [steps]="steps" [current]="step()" /></div>
+
+  @switch (step()) {
+    @case (0) {
+      <h2 class="tmt-section-title mt-8 text-2xl!">Confirma tu identidad</h2>
+      <p class="tmt-page-subtitle mb-6">
+        Ingresa el código que recibiste para confirmar tu identidad.
+      </p>
+      <app-identity-verification purpose="Activation" (verified)="onVerified($event)" />
+    }
+    @case (1) {
+      <h2 class="tmt-section-title mt-8 text-2xl!">Crea tu contraseña</h2>
+      <p class="tmt-page-subtitle mb-6">La contraseña solo la defines tú.</p>
+      <form class="flex flex-col gap-5" [formRoot]="passwordForm">
+        <app-password-input
+          autocomplete="new-password"
+          [hint]="passwordHint"
+          [formField]="passwordForm.password"
+        />
+        <app-password-input
+          label="Confirmar contraseña"
+          placeholder="Vuelve a ingresar tu contraseña"
+          autocomplete="new-password"
+          [formField]="passwordForm.confirmPassword"
+        />
+        <button mat-flat-button type="submit" class="mt-4 h-12!">
+          Continuar
+          <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+        </button>
+      </form>
+    }
+    @case (2) {
+      <h2 class="tmt-section-title mt-8 text-2xl!">Completa tu perfil</h2>
+      <p class="tmt-page-subtitle mb-6">
+        Revisa tus datos. Todos son obligatorios menos el correo.
+      </p>
+      <form class="flex flex-col gap-5" [formRoot]="profileForm">
+        <app-profile-fields [columns]="1" [fields]="profileForm" [role]="role()" />
+        <button
+          mat-flat-button
+          type="submit"
+          class="mt-2 h-12!"
+          [disabled]="profileForm().submitting()"
+        >
+          Activar mi cuenta
+          <mat-icon iconPositionEnd>check</mat-icon>
+        </button>
+      </form>
+    }
+  }
+
+  @if (errorMessage(); as message) {
+    <p class="tmt-alert is-error mt-4 mb-0" role="alert">
+      <mat-icon class="text-error">error</mat-icon><span>{{ message }}</span>
+    </p>
+  }
+</app-auth-shell>

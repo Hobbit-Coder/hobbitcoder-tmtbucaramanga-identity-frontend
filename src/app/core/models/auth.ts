@@ -1,11 +1,4 @@
-/** Cuerpo de `POST /api/auth/register`: registro público, sin roles. */
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string | null;
-}
+import { AccessStatus, Gender, UserRole } from './role';
 
 /**
  * Cuerpo de `POST /api/auth/authorize`: la aplicación cliente que pide entrar con la sesión de
@@ -24,9 +17,9 @@ export interface AuthorizeResponse {
   redirectUri: string;
 }
 
-/** Datos de `POST /api/auth/login` en Identity (la audiencia la agrega `AuthService`). */
+/** Datos de `POST /api/auth/login`: teléfono, nombre de usuario o correo registrado (§6). */
 export interface LoginCredentials {
-  email: string;
+  identifier: string;
   password: string;
 }
 
@@ -56,14 +49,39 @@ export interface AuthResponse {
   refreshTokenExpiresAt: string;
 }
 
-/** Perfil del usuario autenticado (`GET /api/auth/me` en Identity). */
-export interface CurrentUser {
+/** Cuenta tal como la devuelve Identity (`UserResponse`): `/api/auth/me` y `/api/users`. */
+export interface UserProfile {
   id: string;
-  email: string;
   firstName: string;
   lastName: string;
+  gender: Gender | null;
   phoneNumber: string | null;
+  email: string | null;
+  userName: string;
+  instagram: string | null;
+  birthDate: string | null;
+  /** Calculada por Identity a partir de la fecha de nacimiento. */
+  age: number | null;
+  role: UserRole;
   isActive: boolean;
-  emailConfirmed: boolean;
-  roles: string[];
+  canRegisterAttendees: boolean;
+  accessStatus: AccessStatus;
+  lockoutEnd: string | null;
+  createdDate: string;
+  deletedAt: string | null;
 }
+
+/** Perfil que el titular completa al activar su cuenta o edita en Mi perfil (§5). */
+export interface ProfileData {
+  firstName: string;
+  lastName: string;
+  gender: Gender | null;
+  phoneNumber: string;
+  email: string | null;
+  userName: string;
+  instagram: string | null;
+  birthDate: string | null;
+}
+
+export type VerificationChannel = 'Sms' | 'WhatsApp';
+export type VerificationPurpose = 'Activation' | 'Recovery';

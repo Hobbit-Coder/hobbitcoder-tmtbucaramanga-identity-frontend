@@ -1,35 +1,56 @@
-<main class="mx-auto flex min-h-dvh max-w-sm flex-col justify-center gap-6 p-4">
-  <h1 class="text-2xl font-medium">Iniciar sesión</h1>
+<app-auth-shell>
+  <h1 class="tmt-page-title md:text-[2.5rem]! md:leading-[3rem]!">Bienvenido a TMT</h1>
+  <p class="tmt-page-subtitle">Ingresa para continuar.</p>
 
-  <form class="flex flex-col gap-2" [formRoot]="signInForm">
-    <mat-form-field>
-      <mat-label>Correo</mat-label>
-      <input matInput type="email" autocomplete="username" [formField]="signInForm.email" />
-      <mat-error>{{ signInForm.email().errors()[0]?.message }}</mat-error>
-    </mat-form-field>
+  <!-- El aviso de éxito se oculta si el ingreso falla, para no mostrar mensajes contradictorios. -->
+  @if (!errorMessage()) {
+    @switch (notice()) {
+      @case ('activated') {
+        <p class="tmt-alert is-success mt-6 mb-0" role="status">
+          <mat-icon class="text-success">check_circle</mat-icon
+          ><span>Tu cuenta quedó activa. Ingresa con tu contraseña.</span>
+        </p>
+      }
+      @case ('password') {
+        <p class="tmt-alert is-success mt-6 mb-0" role="status">
+          <mat-icon class="text-success">check_circle</mat-icon
+          ><span>Tu contraseña se actualizó. Ingresa con la nueva contraseña.</span>
+        </p>
+      }
+    }
+  }
 
-    <mat-form-field>
-      <mat-label>Contraseña</mat-label>
+  <form class="mt-8 flex flex-col gap-5" [formRoot]="signInForm">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>Teléfono, usuario o correo registrado</mat-label>
+      <mat-icon matPrefix class="mx-2 text-secondary">person</mat-icon>
       <input
         matInput
-        type="password"
-        autocomplete="current-password"
-        [formField]="signInForm.password"
+        autocomplete="username"
+        placeholder="Ingresa tu teléfono, usuario o correo"
+        [formField]="signInForm.identifier"
       />
-      <mat-error>{{ signInForm.password().errors()[0]?.message }}</mat-error>
+      <mat-error>{{ signInForm.identifier().errors()[0]?.message }}</mat-error>
     </mat-form-field>
 
+    <app-password-input [formField]="signInForm.password" />
+
     @if (errorMessage(); as message) {
-      <p class="error-message" role="alert">{{ message }}</p>
+      <p class="tmt-alert is-error m-0" role="alert">
+        <mat-icon class="text-error">error</mat-icon><span>{{ message }}</span>
+      </p>
     }
 
-    <button mat-flat-button type="submit" [disabled]="signInForm().submitting()">
-      Iniciar sesión
+    <button mat-flat-button type="submit" class="h-12!" [disabled]="signInForm().submitting()">
+      Ingresar
+      <mat-icon iconPositionEnd>arrow_forward</mat-icon>
     </button>
   </form>
 
-  <p>
-    ¿No tienes cuenta?
-    <a routerLink="/auth/sign-up" [queryParams]="{ returnUrl: returnUrl() }">Crear una cuenta</a>
-  </p>
-</main>
+  <nav class="mt-6 flex flex-wrap justify-between gap-4" aria-label="Otras opciones de acceso">
+    <a routerLink="/auth/first-access" [queryParams]="{ returnUrl: returnUrl() }"
+      >Es mi primer ingreso</a
+    >
+    <a routerLink="/auth/recover" [queryParams]="{ returnUrl: returnUrl() }">Recuperar acceso</a>
+  </nav>
+</app-auth-shell>

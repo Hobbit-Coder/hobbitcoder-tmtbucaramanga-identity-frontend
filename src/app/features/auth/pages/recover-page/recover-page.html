@@ -1,0 +1,62 @@
+<app-auth-shell [showBrandPanel]="false">
+  <div class="flex items-center gap-2">
+    <a
+      mat-icon-button
+      routerLink="/auth/sign-in"
+      [queryParams]="{ returnUrl: returnUrl() }"
+      aria-label="Volver al ingreso"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </a>
+    <h1 class="m-0 text-lg font-semibold">Recuperar acceso</h1>
+  </div>
+
+  @if (!verified()) {
+    <p class="tmt-page-subtitle mt-4 mb-6">
+      Confirma tu identidad y te ayudaremos a restablecer tu contraseña.
+    </p>
+    <app-identity-verification purpose="Recovery" (verified)="onVerified($event)" />
+  } @else {
+    <h2 class="tmt-section-title mt-8 text-2xl!">Crea una contraseña nueva</h2>
+    <p class="tmt-page-subtitle mb-6">
+      Al guardarla se cierran las sesiones abiertas en otros dispositivos.
+    </p>
+    <form class="flex flex-col gap-5" [formRoot]="passwordForm">
+      <app-password-input
+        label="Contraseña nueva"
+        autocomplete="new-password"
+        [hint]="passwordHint"
+        [formField]="passwordForm.password"
+      />
+      <app-password-input
+        label="Confirmar contraseña"
+        placeholder="Vuelve a ingresar tu contraseña"
+        autocomplete="new-password"
+        [formField]="passwordForm.confirmPassword"
+      />
+      <button
+        mat-flat-button
+        type="submit"
+        class="mt-4 h-12!"
+        [disabled]="passwordForm().submitting()"
+      >
+        Guardar contraseña
+        <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+      </button>
+    </form>
+  }
+
+  @if (errorMessage(); as message) {
+    <p class="tmt-alert is-error mt-4 mb-0" role="alert">
+      <mat-icon class="text-error">error</mat-icon><span>{{ message }}</span>
+    </p>
+  }
+
+  <a
+    class="mt-6 inline-flex items-center gap-2"
+    routerLink="/auth/sign-in"
+    [queryParams]="{ returnUrl: returnUrl() }"
+  >
+    <mat-icon>arrow_back</mat-icon> Volver al ingreso
+  </a>
+</app-auth-shell>

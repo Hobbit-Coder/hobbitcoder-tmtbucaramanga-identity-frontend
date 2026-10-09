@@ -6,7 +6,12 @@
 export const environment = {
   production: true,
   identityApiUrl: '',
+  /** Frontend de Sheepfold: los accesos del menú (Calendario, Configuración, Registros) llevan allí. */
+  sheepfoldUrl: 'https://sheepfold.tmtbucaramanga.com',
+  /** API de Sheepfold: responsabilidades en grupos que se muestran al editar una cuenta. */
+  sheepfoldApiUrl: 'https://sheepfold.tmtbucaramanga.com',
   audiences: {
     identity: 'HobbitCoder.TMTBucaramanga.Identity',
+    sheepfold: 'HobbitCoder.TMTBucaramanga.Sheepfold',
   },
 };

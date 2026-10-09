@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { UserRolesService } from '@core/index';
 import { AuthService } from '@features/auth/services/auth-service';
 import { of } from 'rxjs';
+import { CurrentUserStore } from '@shared/services/current-user-store';
 import { ClassyLayout } from './classy-layout';
 
 describe('ClassyLayout', () => {
@@ -18,6 +19,7 @@ describe('ClassyLayout', () => {
           provide: AuthService,
           useValue: { getCurrentUser: () => of(undefined), logout: () => of(undefined) },
         },
+        { provide: CurrentUserStore, useValue: { user: { value: () => undefined } } },
       ],
     }).compileComponents();
 
@@ -25,12 +27,10 @@ describe('ClassyLayout', () => {
     await fixture.whenStable();
   });
 
-  it('arma la barra superior, el menú lateral y el pie alrededor del contenido', () => {
+  it('arma el menú lateral alrededor del contenido', () => {
     const element = fixture.nativeElement as HTMLElement;
 
-    expect(element.querySelector('app-navbar-component')).not.toBeNull();
     expect(element.querySelector('app-sidebar-component')).not.toBeNull();
-    expect(element.querySelector('router-outlet')).not.toBeNull();
-    expect(element.querySelector('app-footer-component')).not.toBeNull();
+    expect(element.querySelector('main router-outlet')).not.toBeNull();
   });
 });

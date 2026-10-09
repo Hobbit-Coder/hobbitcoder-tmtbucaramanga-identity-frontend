@@ -27,4 +27,5 @@ export * from './services/local-storage-service';
 export * from './services/session-service';
 export * from './services/session-storage-service';
 export * from './services/sign-in-url-service';
+export * from './services/theme-service';
 export * from './services/user-roles-service';

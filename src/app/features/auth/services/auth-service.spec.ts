@@ -8,6 +8,7 @@ import { firstValueFrom } from 'rxjs';
 import { AuthService } from './auth-service';
 
 const AUTH_API = `${environment.identityApiUrl}/api/auth`;
+const ACCOUNT_API = `${environment.identityApiUrl}/api/account`;
 const IDENTITY_AUDIENCE = environment.audiences.identity;
 
 const authResponse: AuthResponse = {
@@ -18,10 +19,6 @@ const authResponse: AuthResponse = {
   refreshToken: 'refresh-1',
   refreshTokenExpiresAt: '',
 };
-
-function settle(): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve));
-}
 
 describe('AuthService', () => {
   let auth: AuthService;
@@ -46,12 +43,12 @@ describe('AuthService', () => {
     localStorage.clear();
   });
 
-  it('inicia sesión con un token para la API de Identity', async () => {
-    const login = firstValueFrom(auth.login({ email: 'ana@example.com', password: 'Clave#2026' }));
+  it('inicia sesión con teléfono, usuario o correo y un token para la API de Identity', async () => {
+    const login = firstValueFrom(auth.login({ identifier: '3001234567', password: 'Clave#2026' }));
 
     const request = http.expectOne(`${AUTH_API}/login`);
     expect(request.request.body).toEqual({
-      email: 'ana@example.com',
+      identifier: '3001234567',
       password: 'Clave#2026',
       audience: IDENTITY_AUDIENCE,
     });
@@ -62,44 +59,58 @@ describe('AuthService', () => {
     expect(session.accessToken(IDENTITY_AUDIENCE)).toBe('identity-token-1');
   });
 
-  it('al registrarse crea la cuenta e inicia sesión con ella', async () => {
-    const register = firstValueFrom(
-      auth.register({
-        email: 'ana@example.com',
-        password: 'Clave#2026',
-        firstName: 'Ana',
-        lastName: 'Pérez',
-        phoneNumber: null,
-      }),
-    );
-
-    http.expectOne(`${AUTH_API}/register`).flush('01a0fd28-eb05-7fba-8260-b2345d93bcec', {
-      status: 201,
-      statusText: 'Created',
+  it('pide y confirma el código de seguridad sin sesión', async () => {
+    const started = firstValueFrom(auth.startVerification('ana.p', 'WhatsApp', 'Activation'));
+    const start = http.expectOne(`${ACCOUNT_API}/verification`);
+    expect(start.request.body).toEqual({
+      identifier: 'ana.p',
+      channel: 'WhatsApp',
+      purpose: 'Activation',
     });
-    await settle();
-    const login = http.expectOne(`${AUTH_API}/login`);
-    expect(login.request.body.email).toBe('ana@example.com');
-    login.flush(authResponse);
-    await register;
+    start.flush({ verificationId: 'v-1' });
+    await expect(started).resolves.toBe('v-1');
 
-    expect(session.isAuthenticated()).toBe(true);
+    const confirmed = firstValueFrom(auth.confirmVerification('v-1', '123456'));
+    const confirm = http.expectOne(`${ACCOUNT_API}/verification/confirm`);
+    expect(confirm.request.body).toEqual({ verificationId: 'v-1', code: '123456' });
+    confirm.flush({ verificationToken: 'token-1' });
+    await expect(confirmed).resolves.toBe('token-1');
   });
 
-  it('si el registro falla no intenta iniciar sesión', async () => {
-    const register = firstValueFrom(
-      auth.register({
-        email: 'ana@example.com',
-        password: 'Clave#2026',
-        firstName: 'Ana',
-        lastName: 'Pérez',
-        phoneNumber: null,
-      }),
-    );
+  it('activa la cuenta con la contraseña y el perfil en una sola petición', async () => {
+    const profile = {
+      firstName: 'Ana',
+      lastName: 'Pérez',
+      gender: 'Female' as const,
+      phoneNumber: '3001234567',
+      email: null,
+      userName: 'ana.p',
+      instagram: 'ana.p',
+      birthDate: '2008-03-15',
+    };
+    const activated = firstValueFrom(auth.activate('token-1', 'Clave#2026', profile), {
+      defaultValue: undefined,
+    });
 
-    http.expectOne(`${AUTH_API}/register`).flush(null, { status: 409, statusText: 'Conflict' });
+    const request = http.expectOne(`${ACCOUNT_API}/activation`);
+    expect(request.request.body).toEqual({
+      verificationToken: 'token-1',
+      password: 'Clave#2026',
+      ...profile,
+    });
+    request.flush(null, { status: 204, statusText: 'No Content' });
+    await activated;
+  });
 
-    await expect(register).rejects.toMatchObject({ status: 409 });
+  it('crea una contraseña nueva con el token de verificación', async () => {
+    const reset = firstValueFrom(auth.resetPassword('token-2', 'Nueva#2026'), {
+      defaultValue: undefined,
+    });
+
+    const request = http.expectOne(`${ACCOUNT_API}/password`);
+    expect(request.request.body).toEqual({ verificationToken: 'token-2', password: 'Nueva#2026' });
+    request.flush(null, { status: 204, statusText: 'No Content' });
+    await reset;
   });
 
   it('autoriza a una aplicación cliente y emite la URI a la que debe volver', async () => {

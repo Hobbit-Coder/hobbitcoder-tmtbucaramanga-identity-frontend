@@ -42,40 +42,59 @@ describe('SignInPage', () => {
     expect(login).not.toHaveBeenCalled();
   });
 
-  it('inicia sesión y vuelve a la página pedida', async () => {
+  it('ingresa con teléfono, usuario o correo y vuelve a la página pedida', async () => {
     login.mockReturnValue(of(undefined));
     fixture.componentRef.setInput('returnUrl', '/auth/authorize?client_id=sheepfold-web');
-    fill('input[type=email]', 'ana@example.com');
-    fill('input[type=password]', 'Clave#2026');
+    fill('input[autocomplete=username]', ' 300 123 4567 ');
+    fill('input[autocomplete=current-password]', 'Clave#2026');
 
     await submit();
 
-    expect(login).toHaveBeenCalledWith({ email: 'ana@example.com', password: 'Clave#2026' });
+    expect(login).toHaveBeenCalledWith({ identifier: '300 123 4567', password: 'Clave#2026' });
     expect(navigateByUrl).toHaveBeenCalledWith('/auth/authorize?client_id=sheepfold-web');
   });
 
   it('ignora un returnUrl externo', async () => {
     login.mockReturnValue(of(undefined));
     fixture.componentRef.setInput('returnUrl', 'https://evil.com');
-    fill('input[type=email]', 'ana@example.com');
-    fill('input[type=password]', 'Clave#2026');
+    fill('input[autocomplete=username]', 'ana.p');
+    fill('input[autocomplete=current-password]', 'Clave#2026');
 
     await submit();
 
     expect(navigateByUrl).toHaveBeenCalledWith('/');
   });
 
-  it('con credenciales inválidas muestra el error', async () => {
-    const problem = { status: 401 } as ProblemDetails;
-    login.mockReturnValue(throwError(() => problem));
-    fill('input[type=email]', 'ana@example.com');
-    fill('input[type=password]', 'mala');
+  it('con datos inválidos muestra un error que no revela si la cuenta existe', async () => {
+    login.mockReturnValue(throwError(() => ({ status: 401 }) as ProblemDetails));
+    fill('input[autocomplete=username]', 'ana.p');
+    fill('input[autocomplete=current-password]', 'mala');
 
     await submit();
 
     expect(element.querySelector('[role=alert]')?.textContent).toContain(
-      'El correo o la contraseña no son válidos.',
+      'Los datos de ingreso no son válidos.',
     );
     expect(navigateByUrl).not.toHaveBeenCalled();
+  });
+
+  it('con una cuenta desactivada informa que el acceso no está disponible', async () => {
+    login.mockReturnValue(throwError(() => ({ status: 403 }) as ProblemDetails));
+    fill('input[autocomplete=username]', 'ana.p');
+    fill('input[autocomplete=current-password]', 'Clave#123');
+
+    await submit();
+
+    expect(element.querySelector('[role=alert]')?.textContent).toContain(
+      'Tu acceso no está disponible.',
+    );
+    expect(navigateByUrl).not.toHaveBeenCalled();
+  });
+
+  it('ofrece el primer ingreso y la recuperación del acceso', () => {
+    const links = [...element.querySelectorAll('nav a')].map((link) => link.getAttribute('href'));
+
+    expect(links.some((href) => href?.startsWith('/auth/first-access'))).toBe(true);
+    expect(links.some((href) => href?.startsWith('/auth/recover'))).toBe(true);
   });
 });

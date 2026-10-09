@@ -15,7 +15,6 @@ import { AuthService } from '@features/auth/services/auth-service';
 @Component({
   imports: [RouterLink],
   selector: 'app-authorize-page',
-  styleUrl: './authorize-page.scss',
   templateUrl: './authorize-page.html',
 })
 export class AuthorizePage implements OnInit {

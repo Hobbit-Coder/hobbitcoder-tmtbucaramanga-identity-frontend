@@ -10,11 +10,12 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./features/home/home.routes').then((m) => m.homeRoutes),
+        loadChildren: () =>
+          import('./features/profile/profile.routes').then((m) => m.profileRoutes),
       },
       {
         path: 'users',
-        ...requireRoles([Role.Admin]),
+        ...requireRoles([Role.Admin, Role.Director]),
         loadChildren: () => import('./features/users/users.routes').then((m) => m.usersRoutes),
       },
     ],

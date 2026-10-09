@@ -1,0 +1,95 @@
+/*
+ * Tokens de diseño TMT (manual UI/UX §3). Un mismo archivo en Identity y en Sheepfold: cada rol tiene un
+ * único responsable y Material y Tailwind lo leen de aquí. El tema efectivo lo pone ThemeService en
+ * <html data-theme="light|dark">.
+ */
+:root {
+  --tmt-canvas: #f6f7f9;
+  --tmt-surface: #ffffff;
+  --tmt-surface-subtle: #eef1f4;
+  --tmt-text-primary: #17191d;
+  --tmt-text-secondary: #596270;
+  --tmt-border-subtle: #e1e5ea;
+  --tmt-outline-control: #747e8a;
+  --tmt-primary: #0f766e;
+  --tmt-on-primary: #ffffff;
+  --tmt-primary-container: #e0f3ef;
+  --tmt-on-primary-container: #075e56;
+  --tmt-error: #b42318;
+  --tmt-on-error: #ffffff;
+  --tmt-error-container: #fff0ec;
+  --tmt-success: #167044;
+  --tmt-success-container: #e8f5ec;
+  --tmt-warning: #805400;
+  --tmt-warning-container: #fff3d6;
+  --tmt-info: #245bb0;
+  --tmt-info-container: #e8effa;
+  --tmt-focus: #0f766e;
+  --tmt-scrim: rgb(23 25 29 / 40%);
+
+  /* Identidad de generaciones (§3): trazo decorativo y pareja texto/fondo. */
+  --tmt-pulso-stroke: #f26d72;
+  --tmt-pulso-text: #9d2b40;
+  --tmt-pulso-bg: #fdecef;
+  --tmt-eco-stroke: #2baf9d;
+  --tmt-eco-text: #075e56;
+  --tmt-eco-bg: #e0f3ef;
+  --tmt-legado1-stroke: #8b6cd9;
+  --tmt-legado1-text: #6540a0;
+  --tmt-legado1-bg: #f0eafb;
+  --tmt-legado2-stroke: #6d5db5;
+  --tmt-legado2-text: #51418d;
+  --tmt-legado2-bg: #eeebf8;
+
+  /* Capas del calendario. */
+  --tmt-layer-event: #0f766e;
+  --tmt-layer-birthday: #f26d72;
+  --tmt-layer-followup: #8b6cd9;
+
+  --tmt-radius-control: 12px;
+  --tmt-radius-card: 16px;
+  --tmt-radius-panel: 20px;
+  --tmt-elevation-overlay: 0 8px 24px rgb(16 18 20 / 12%), 0 2px 6px rgb(16 18 20 / 8%);
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --tmt-canvas: #101214;
+  --tmt-surface: #191d22;
+  --tmt-surface-subtle: #242a31;
+  --tmt-text-primary: #f3f5f7;
+  --tmt-text-secondary: #b7c0cb;
+  --tmt-border-subtle: #36404a;
+  --tmt-outline-control: #85909d;
+  --tmt-primary: #5eead4;
+  --tmt-on-primary: #062b27;
+  --tmt-primary-container: #153d38;
+  --tmt-on-primary-container: #a3f4e4;
+  --tmt-error: #ffb4a8;
+  --tmt-on-error: #46241f;
+  --tmt-error-container: #46241f;
+  --tmt-success: #8ee6b3;
+  --tmt-success-container: #173b29;
+  --tmt-warning: #ffd58a;
+  --tmt-warning-container: #3b301d;
+  --tmt-info: #a8caff;
+  --tmt-info-container: #1d2b40;
+  --tmt-focus: #5eead4;
+  --tmt-scrim: rgb(0 0 0 / 60%);
+
+  --tmt-pulso-text: #ffb5be;
+  --tmt-pulso-bg: #45252d;
+  --tmt-eco-text: #a3f4e4;
+  --tmt-eco-bg: #153d38;
+  --tmt-legado1-text: #d3bcff;
+  --tmt-legado1-bg: #342445;
+  --tmt-legado2-text: #c8c0ff;
+  --tmt-legado2-bg: #302b46;
+
+  --tmt-layer-event: #5eead4;
+
+  --tmt-elevation-overlay: 0 8px 24px rgb(0 0 0 / 45%), 0 2px 6px rgb(0 0 0 / 30%);
+
+  color-scheme: dark;
+}

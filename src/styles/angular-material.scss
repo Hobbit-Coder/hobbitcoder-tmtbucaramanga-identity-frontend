@@ -1,38 +1,114 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// Tema Material 3 con los roles del manual TMT. La paleta base solo aporta tonos derivados que no están en
+// el manual (estados intermedios); los roles visibles se reemplazan por los tokens de tokens.css, así que
+// Material y Tailwind comparten exactamente los mismos colores en claro y oscuro.
 @use '@angular/material' as mat;
 
 html {
-  height: 100%;
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: mat.$cyan-palette,
+        tertiary: mat.$violet-palette,
+        theme-type: color-scheme,
       ),
       typography: Roboto,
       density: 0,
     )
   );
+
+  @include mat.theme-overrides(
+    (
+      primary: var(--tmt-primary),
+      on-primary: var(--tmt-on-primary),
+      primary-container: var(--tmt-primary-container),
+      on-primary-container: var(--tmt-on-primary-container),
+      secondary-container: var(--tmt-primary-container),
+      on-secondary-container: var(--tmt-on-primary-container),
+      error: var(--tmt-error),
+      on-error: var(--tmt-on-error),
+      error-container: var(--tmt-error-container),
+      background: var(--tmt-canvas),
+      on-background: var(--tmt-text-primary),
+      surface: var(--tmt-surface),
+      on-surface: var(--tmt-text-primary),
+      on-surface-variant: var(--tmt-text-secondary),
+      surface-container-lowest: var(--tmt-surface),
+      surface-container-low: var(--tmt-surface),
+      surface-container: var(--tmt-surface),
+      surface-container-high: var(--tmt-surface),
+      surface-container-highest: var(--tmt-surface-subtle),
+      outline: var(--tmt-outline-control),
+      outline-variant: var(--tmt-border-subtle),
+    )
+  );
+
+  // Forma del manual §5: controles 12 px, tarjetas 16 px, diálogos y paneles 20 px.
+  @include mat.button-overrides(
+    (
+      filled-container-shape: var(--tmt-radius-control),
+      outlined-container-shape: var(--tmt-radius-control),
+      text-container-shape: var(--tmt-radius-control),
+      tonal-container-shape: var(--tmt-radius-control),
+      protected-container-shape: var(--tmt-radius-control),
+      filled-container-height: 48px,
+      outlined-container-height: 48px,
+      tonal-container-height: 48px,
+    )
+  );
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: var(--tmt-radius-control),
+    )
+  );
+  @include mat.dialog-overrides(
+    (
+      container-shape: var(--tmt-radius-panel),
+    )
+  );
+  @include mat.card-overrides(
+    (
+      outlined-container-shape: var(--tmt-radius-card),
+      elevated-container-shape: var(--tmt-radius-card),
+    )
+  );
+  @include mat.sidenav-overrides(
+    (
+      container-shape: 0,
+      container-width: 224px,
+      container-background-color: var(--tmt-surface),
+      container-divider-color: var(--tmt-border-subtle),
+      content-background-color: var(--tmt-canvas),
+    )
+  );
+  @include mat.button-toggle-overrides(
+    (
+      shape: var(--tmt-radius-control),
+    )
+  );
 }
 
-body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
+// Acción destructiva (retirar, eliminar): botón lleno con el rol de error.
+.tmt-danger-button {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--tmt-error),
+      filled-label-text-color: var(--tmt-on-error),
+    )
+  );
+}
 
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
+// Panel lateral de edición (M16 "Editar usuario"): ocupa el alto a la derecha; en móvil, toda la pantalla.
+.tmt-side-panel {
+  @include mat.dialog-overrides(
+    (
+      container-shape: 0,
+    )
+  );
 
-  // Reset the user agent margin.
-  margin: 0;
-  height: 100%;
+  @media (min-width: 37.5rem) {
+    .mat-mdc-dialog-surface {
+      border-top-left-radius: var(--tmt-radius-panel);
+      border-bottom-left-radius: var(--tmt-radius-panel);
+    }
+  }
 }

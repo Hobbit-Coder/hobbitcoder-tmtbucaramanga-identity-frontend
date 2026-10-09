@@ -1,50 +1,47 @@
-/** Usuario de `GET /api/users` y `GET /api/users/{id}`. */
-export interface UserResponse {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string | null;
-  isActive: boolean;
-  emailConfirmed: boolean;
-  /** Fin del bloqueo por intentos fallidos; `null` si no está bloqueado. */
-  lockoutEnd: string | null;
-  createdDate: string;
-  roles: string[];
-}
+import { Gender, UserRole } from '@core/index';
 
 /** Filtros y página de `GET /api/users`. */
 export interface GetUsersRequest {
   search?: string;
   isActive?: boolean;
-  role?: string;
+  role?: UserRole;
   pageNumber: number;
   pageSize: number;
 }
 
-/** Datos que comparten el alta y la edición. `roles` reemplaza los actuales. */
+/**
+ * Cuerpo de `POST /api/users` y `PUT /api/users/{id}` (§4.5). No lleva contraseña: el titular la crea al
+ * activar su cuenta y la administración solo puede solicitar el reinicio.
+ */
 export interface UserData {
-  email: string;
   firstName: string;
   lastName: string;
-  phoneNumber: string | null;
+  gender: Gender | null;
+  phoneNumber: string;
+  email: string | null;
+  userName: string;
+  instagram: string | null;
+  birthDate: string | null;
+  role: UserRole;
   isActive: boolean;
-  emailConfirmed: boolean;
-  roles: string[];
+  /** Permiso adicional para registrar asistentes nuevos; no amplía el alcance de edición (§3.2). */
+  canRegisterAttendees: boolean;
 }
 
-/** Cuerpo de `POST /api/users`. */
-export interface CreateUserRequest extends UserData {
-  password: string;
-}
+export type GroupResponsibility = 'Coordinator' | 'Leader' | 'Apprentice';
 
-/** Cuerpo de `PUT /api/users/{id}`. */
-export interface UpdateUserRequest extends UserData {
-  id: string;
-}
+export const RESPONSIBILITY_LABELS: Record<GroupResponsibility, string> = {
+  Coordinator: 'Coordinador',
+  Leader: 'Líder',
+  Apprentice: 'Aprendiz',
+};
 
-/** Cuerpo de `PUT /api/users/{id}/password`. */
-export interface SetUserPasswordRequest {
-  id: string;
-  newPassword: string;
+/** Responsabilidad en un grupo, leída de Sheepfold (`GET /api/users/{id}/responsibilities`). */
+export interface UserResponsibility {
+  groupId: string;
+  name: string;
+  year: number;
+  generationName: string;
+  responsibility: GroupResponsibility;
+  isActive: boolean;
 }

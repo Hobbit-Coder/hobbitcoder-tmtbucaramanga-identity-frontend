@@ -4,6 +4,6 @@ export const usersRoutes: Routes = [
   {
     path: '',
     loadComponent: () => import('./pages/users-page/users-page').then((m) => m.UsersPage),
-    title: 'Usuarios | Identity',
+    title: 'Usuarios | TMT',
   },
 ];

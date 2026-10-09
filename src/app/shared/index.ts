@@ -1,7 +1,5 @@
 // components
-export * from './components/footer-component/footer-component';
 export * from './components/loader-component/loader-component';
-export * from './components/navbar-component/navbar-component';
 export * from './components/progress-bar-component/progress-bar-component';
 export * from './components/sidebar-component/sidebar-component';
 

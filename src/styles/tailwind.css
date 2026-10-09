@@ -1,1 +1,42 @@
 @import 'tailwindcss';
+@import './tokens.css';
+
+/* Oscuro según el tema efectivo (data-theme), no solo según el sistema: el usuario puede elegirlo. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/*
+ * Alias semánticos hacia los tokens del manual: las utilidades (bg-surface, text-secondary...) siguen el
+ * tema sin duplicar colores. Puntos de adaptación del manual §6: 600, 960, 1280 y 1920 px.
+ */
+@theme inline {
+  --breakpoint-sm: 37.5rem;
+  --breakpoint-md: 60rem;
+  --breakpoint-lg: 80rem;
+  --breakpoint-xl: 120rem;
+
+  --font-sans: 'Roboto', 'Segoe UI', Arial, sans-serif;
+
+  --color-canvas: var(--tmt-canvas);
+  --color-surface: var(--tmt-surface);
+  --color-surface-subtle: var(--tmt-surface-subtle);
+  --color-primary: var(--tmt-text-primary);
+  --color-secondary: var(--tmt-text-secondary);
+  --color-border-subtle: var(--tmt-border-subtle);
+  --color-outline-control: var(--tmt-outline-control);
+  --color-accent: var(--tmt-primary);
+  --color-on-accent: var(--tmt-on-primary);
+  --color-selection: var(--tmt-primary-container);
+  --color-selection-text: var(--tmt-on-primary-container);
+  --color-error: var(--tmt-error);
+  --color-error-container: var(--tmt-error-container);
+  --color-success: var(--tmt-success);
+  --color-success-container: var(--tmt-success-container);
+  --color-warning: var(--tmt-warning);
+  --color-warning-container: var(--tmt-warning-container);
+  --color-info: var(--tmt-info);
+  --color-info-container: var(--tmt-info-container);
+
+  --radius-control: var(--tmt-radius-control);
+  --radius-card: var(--tmt-radius-card);
+  --radius-panel: var(--tmt-radius-panel);
+}

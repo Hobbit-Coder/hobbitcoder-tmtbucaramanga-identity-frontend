@@ -1,10 +1,11 @@
 <main class="mx-auto flex min-h-dvh max-w-sm flex-col justify-center gap-4 p-4">
   @if (errorMessage(); as message) {
-    <h1 class="text-2xl font-medium">No fue posible continuar</h1>
-    <p class="error-message" role="alert">{{ message }}</p>
-    <a routerLink="/">Ir a mi cuenta</a>
+    <h1 class="tmt-page-title">No fue posible continuar</h1>
+    <p class="tmt-alert is-error m-0" role="alert">{{ message }}</p>
+    <a routerLink="/">Ir a mi perfil</a>
   } @else {
-    <h1 class="text-2xl font-medium">Volviendo a la aplicación…</h1>
-    <p role="status">Estamos confirmando tu sesión.</p>
+    <div class="tmt-skeleton h-1 w-24" aria-hidden="true"></div>
+    <h1 class="tmt-page-title">Volviendo a la aplicación…</h1>
+    <p class="m-0 text-secondary" role="status">Estamos confirmando tu sesión.</p>
   }
 </main>

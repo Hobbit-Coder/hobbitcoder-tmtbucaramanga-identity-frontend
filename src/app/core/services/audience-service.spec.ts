@@ -15,10 +15,26 @@ describe('AudienceService', () => {
     expect(audiences.forUrl('/api/users?pageNumber=1')).toBe(environment.audiences.identity);
   });
 
-  it('login, registro, refresh, logout y canje de código no llevan token', () => {
-    for (const endpoint of ['login', 'register', 'refresh', 'logout', 'token']) {
-      expect(audiences.forUrl(`/api/auth/${endpoint}`)).toBeNull();
+  it('login, refresh, logout, canje de código y procesos sin sesión no llevan token', () => {
+    for (const endpoint of [
+      'auth/login',
+      'auth/refresh',
+      'auth/logout',
+      'auth/token',
+      'account/verification',
+      'account/verification/confirm',
+      'account/activation',
+      'account/activation/profile',
+      'account/password',
+    ]) {
+      expect(audiences.forUrl(`/api/${endpoint}`)).toBeNull();
     }
+  });
+
+  it('la API de Sheepfold lleva un token con su audiencia', () => {
+    expect(audiences.forUrl(`${environment.sheepfoldApiUrl}/api/users/1/responsibilities`)).toBe(
+      environment.audiences.sheepfold,
+    );
   });
 
   it('otros orígenes no llevan token', () => {
