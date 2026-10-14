@@ -5,19 +5,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
-import { ProblemDetails, VerificationChannel, VerificationPurpose } from '@core/index';
+import { ProblemDetails, VerificationPurpose } from '@core/index';
 import { AuthService } from '@features/auth/services/auth-service';
 import { firstValueFrom } from 'rxjs';
 
 interface VerificationModel {
   identifier: string;
-  channel: VerificationChannel;
   code: string;
 }
 
 /**
- * Confirmación de identidad del titular (§6): teléfono o usuario, canal SMS o WhatsApp y el código recibido.
+ * Confirmación de identidad del titular (§6): teléfono o usuario y el código recibido por WhatsApp (único
+ * canal habilitado: el proveedor es WhatsApp Cloud API y no envía SMS).
  * Antes de pedir el código muestra "Enviar código"; después, el identificador en lectura y "Confirmar
  * identidad". El código es un solo campo que admite pegar; su longitud y vigencia las define Identity.
  */
@@ -29,7 +28,6 @@ interface VerificationModel {
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatRadioModule,
   ],
   selector: 'app-identity-verification',
   template: `
@@ -41,41 +39,12 @@ interface VerificationModel {
         <mat-error>{{ verificationForm.identifier().errors()[0]?.message }}</mat-error>
       </mat-form-field>
 
-      <fieldset class="m-0 flex flex-col gap-2 border-0 p-0" [disabled]="codeSent()">
-        <legend class="mb-2 p-0 text-sm font-medium">Recibir código por</legend>
-        <mat-radio-group
-          class="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2"
-          aria-label="Canal del código"
-          [formField]="verificationForm.channel"
-        >
-          <mat-radio-button
-            value="Sms"
-            class="tmt-choice-card"
-            [class.is-selected]="model().channel === 'Sms'"
-          >
-            <span class="flex items-center gap-2"
-              ><mat-icon aria-hidden="true">sms</mat-icon
-              ><span class="flex flex-col"
-                ><span class="text-sm font-medium">SMS</span
-                ><span class="tmt-meta">A tu teléfono</span></span
-              ></span
-            >
-          </mat-radio-button>
-          <mat-radio-button
-            value="WhatsApp"
-            class="tmt-choice-card"
-            [class.is-selected]="model().channel === 'WhatsApp'"
-          >
-            <span class="flex items-center gap-2"
-              ><mat-icon aria-hidden="true">chat</mat-icon
-              ><span class="flex flex-col"
-                ><span class="text-sm font-medium">WhatsApp</span
-                ><span class="tmt-meta">A tu WhatsApp</span></span
-              ></span
-            >
-          </mat-radio-button>
-        </mat-radio-group>
-      </fieldset>
+      @if (!codeSent()) {
+        <p class="tmt-meta m-0 flex items-center gap-2">
+          <mat-icon aria-hidden="true">chat</mat-icon> Te enviaremos un código de seguridad por
+          WhatsApp a tu teléfono registrado.
+        </p>
+      }
 
       @if (codeSent()) {
         <p class="tmt-alert m-0" role="status">
@@ -83,7 +52,7 @@ interface VerificationModel {
           <span
             >Si los datos corresponden a una cuenta
             {{ purpose() === 'Activation' ? 'pendiente de activar' : 'activa' }}, enviamos un código
-            de seguridad a su teléfono registrado.</span
+            de seguridad por WhatsApp a su teléfono registrado.</span
           >
         </p>
 
@@ -113,7 +82,7 @@ interface VerificationModel {
       </button>
 
       @if (codeSent()) {
-        <button mat-button type="button" (click)="restart()">Usar otro teléfono o canal</button>
+        <button mat-button type="button" (click)="restart()">Usar otro teléfono o usuario</button>
       }
 
       <p class="tmt-meta m-0 flex items-center gap-1">
@@ -132,7 +101,6 @@ export class IdentityVerification {
 
   protected readonly model = signal<VerificationModel>({
     identifier: '',
-    channel: 'WhatsApp',
     code: '',
   });
   protected readonly codeSent = signal(false);
@@ -167,11 +135,11 @@ export class IdentityVerification {
     this.busy.set(true);
 
     try {
-      const { identifier, channel, code } = this.model();
+      const { identifier, code } = this.model();
 
       if (!this.codeSent() || this._verificationId === null) {
         this._verificationId = await firstValueFrom(
-          this._authService.startVerification(identifier.trim(), channel, this.purpose()),
+          this._authService.startVerification(identifier.trim(), 'WhatsApp', this.purpose()),
         );
         this.codeSent.set(true);
         // El campo del código aparece limpio: el envío anterior no debe marcarlo como error.
@@ -198,7 +166,7 @@ export class IdentityVerification {
           ? 'El código no es válido o ya venció. Revísalo o pide uno nuevo.'
           : 'Revisa el teléfono o el nombre de usuario.';
       case HttpStatusCode.ServiceUnavailable:
-        return 'No fue posible enviar el código en este momento. Intenta más tarde o usa otro canal.';
+        return 'No fue posible enviar el código por WhatsApp en este momento. Intenta más tarde.';
       case 0:
         return 'No fue posible conectar con el servidor. Intenta de nuevo.';
       default:

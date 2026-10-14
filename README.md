@@ -42,7 +42,7 @@ retirados para el administrador y el director).
 | Pieza                                                                        | Responsabilidad                                                                         |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `SignInPage`, `FirstAccessPage`, `RecoverPage` (`features/auth/pages/`)      | Formularios (Signal Forms) de ingreso, activación y recuperación.                       |
-| `IdentityVerification` (`features/auth/components/identity-verification/`)   | Solicita y verifica el código de seguridad (WhatsApp/SMS según la configuración de Identity). |
+| `IdentityVerification` (`features/auth/components/identity-verification/`)   | Solicita y verifica el código de seguridad (solo por WhatsApp: el proveedor no envía SMS).        |
 | `password-rules.ts`, `profile-form.ts` (`features/auth/models/`)             | Política de contraseña y reglas del perfil compartidas por activación, perfil y usuarios. |
 | `AuthorizePage` (`features/auth/pages/authorize-page/`)                      | Pide el código para la aplicación cliente y devuelve el navegador a ella.               |
 | `AuthService` (`features/auth/services/auth-service.ts`)                     | Login, verificación, activación, recuperación, logout, perfil y autorización de clientes. |
