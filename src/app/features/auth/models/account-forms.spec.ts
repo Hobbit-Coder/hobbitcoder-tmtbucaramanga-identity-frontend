@@ -30,7 +30,7 @@ describe('Reglas de los formularios de cuenta', () => {
         email: ' ',
         userName: 'ana.p',
         instagram: 'ana.p',
-        birthDate: '2008-03-15',
+        birthDate: new Date(2008, 2, 15),
       }),
     ).toEqual({
       firstName: 'Ana',

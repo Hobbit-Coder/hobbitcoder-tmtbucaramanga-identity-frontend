@@ -6,7 +6,7 @@ import {
   SchemaPathTree,
   validate,
 } from '@angular/forms/signals';
-import { UserProfile, UserRole } from '@core/index';
+import { dayFromPicker, UserProfile, UserRole } from '@core/index';
 import {
   ageOn,
   emptyProfileForm,
@@ -78,7 +78,7 @@ export function userRules(path: SchemaPathTree<UserForm>, today: () => Date): vo
   );
   maxLength(profile.instagram, 60, { message: 'Máximo 60 caracteres.' });
   validate(profile.birthDate, ({ value }) =>
-    value() !== '' && ageOn(value(), today()) === null
+    value() !== null && ageOn(dayFromPicker(value()), today()) === null
       ? { kind: 'future', message: 'La fecha no puede ser futura.' }
       : null,
   );

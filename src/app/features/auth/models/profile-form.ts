@@ -6,11 +6,11 @@ import {
   SchemaPathTree,
   validate,
 } from '@angular/forms/signals';
-import { Gender, ProfileData, UserProfile } from '@core/index';
+import { dayFromPicker, Gender, pickerDate, ProfileData, UserProfile } from '@core/index';
 
 /**
  * Perfil editable (§5) tal como lo maneja el formulario: textos vacíos en lugar de null para que los campos
- * nativos los editen. `toProfileData` lo vuelve a la forma que espera Identity.
+ * los editen y la fecha como `Date` del selector de Material. `toProfileData` lo vuelve a la forma que espera Identity.
  */
 export interface ProfileForm {
   firstName: string;
@@ -20,8 +20,7 @@ export interface ProfileForm {
   email: string;
   userName: string;
   instagram: string;
-  /** `yyyy-MM-dd` (campo de fecha nativo). */
-  birthDate: string;
+  birthDate: Date | null;
 }
 
 export function emptyProfileForm(): ProfileForm {
@@ -33,7 +32,7 @@ export function emptyProfileForm(): ProfileForm {
     email: '',
     userName: '',
     instagram: '',
-    birthDate: '',
+    birthDate: null,
   };
 }
 
@@ -46,7 +45,7 @@ export function toProfileForm(profile: UserProfile): ProfileForm {
     email: profile.email ?? '',
     userName: profile.userName,
     instagram: profile.instagram ?? '',
-    birthDate: profile.birthDate ?? '',
+    birthDate: pickerDate(profile.birthDate),
   };
 }
 
@@ -61,7 +60,7 @@ export function toProfileData(profile: ProfileForm): ProfileData {
     email: optional(profile.email),
     userName: profile.userName.trim(),
     instagram: optional(profile.instagram),
-    birthDate: optional(profile.birthDate),
+    birthDate: optional(dayFromPicker(profile.birthDate)),
   };
 }
 
@@ -115,7 +114,7 @@ export function profileRules(path: SchemaPathTree<ProfileForm>, today: () => Dat
   maxLength(path.instagram, 60, { message: 'Máximo 60 caracteres.' });
   required(path.birthDate, { message: 'Escribe tu fecha de nacimiento.' });
   validate(path.birthDate, ({ value }) =>
-    value() !== '' && ageOn(value(), today()) === null
+    value() !== null && ageOn(dayFromPicker(value()), today()) === null
       ? { kind: 'future', message: 'La fecha no puede ser futura.' }
       : null,
   );

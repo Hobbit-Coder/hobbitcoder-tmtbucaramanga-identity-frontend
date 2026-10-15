@@ -1,10 +1,11 @@
 import { Component, computed, input } from '@angular/core';
 import { FieldTree, FormField } from '@angular/forms/signals';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { GENDER_LABELS, Gender, ROLE_LABELS, UserRole } from '@core/index';
+import { dayFromPicker, GENDER_LABELS, Gender, ROLE_LABELS, UserRole } from '@core/index';
 import { ageOn, ProfileForm } from '@features/auth/models/profile-form';
 
 /**
@@ -12,7 +13,14 @@ import { ageOn, ProfileForm } from '@features/auth/models/profile-form';
  * lectura: el rol lo asigna la administración y la edad se calcula con la fecha de nacimiento.
  */
 @Component({
-  imports: [FormField, MatFormFieldModule, MatIconModule, MatInputModule, MatSelectModule],
+  imports: [
+    FormField,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+  ],
   selector: 'app-profile-fields',
   host: {
     class: 'grid grid-cols-1 items-start gap-x-4 gap-y-4',
@@ -69,7 +77,14 @@ import { ageOn, ProfileForm } from '@features/auth/models/profile-form';
     <div class="grid grid-cols-[1fr_6rem] gap-3">
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <mat-label>Fecha de nacimiento</mat-label>
-        <input matInput type="date" autocomplete="bday" [formField]="fields().birthDate" />
+        <input
+          matInput
+          autocomplete="bday"
+          [matDatepicker]="birthDatePicker"
+          [formField]="fields().birthDate"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="birthDatePicker" />
+        <mat-datepicker #birthDatePicker startView="multi-year" />
         <mat-error>{{ fields().birthDate().errors()[0]?.message }}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
@@ -108,7 +123,9 @@ export class ProfileFields {
   /** Fecha local de hoy; se inyecta para poder fijarla en pruebas. */
   public readonly today = input<Date>(new Date());
 
-  protected readonly age = computed(() => ageOn(this.fields().birthDate().value(), this.today()));
+  protected readonly age = computed(() =>
+    ageOn(dayFromPicker(this.fields().birthDate().value()), this.today()),
+  );
   protected readonly genders = Object.keys(GENDER_LABELS) as Gender[];
   protected readonly genderLabels = GENDER_LABELS;
   protected readonly roleLabels = ROLE_LABELS;
