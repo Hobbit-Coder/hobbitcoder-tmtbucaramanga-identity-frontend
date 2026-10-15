@@ -16,7 +16,7 @@ interface VerificationModel {
 
 /**
  * Confirmación de identidad del titular (§6): teléfono o usuario y el código recibido por WhatsApp (único
- * canal habilitado: el proveedor es WhatsApp Cloud API y no envía SMS).
+ * canal habilitado: los proveedores de WhatsApp de Identity no envían SMS).
  * Antes de pedir el código muestra "Enviar código"; después, el identificador en lectura y "Confirmar
  * identidad". El código es un solo campo que admite pegar; su longitud y vigencia las define Identity.
  */
