@@ -23,7 +23,7 @@ import { CurrentUserStore } from '@shared/services/current-user-store';
 import { firstValueFrom } from 'rxjs';
 
 /**
- * Mi perfil (S11, M16): información personal, rol en lectura, tema de la interfaz y cambio de contraseña.
+ * Mi perfil: información personal, rol en lectura, tema de la interfaz y cambio de contraseña.
  * Lo usa cualquier cuenta, incluida la del administrador.
  */
 @Component({
@@ -64,8 +64,10 @@ export class ProfilePage {
     return user ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase() : '';
   });
 
+  /**
+   * Carga los datos guardados cada vez que llegan de Identity (al entrar y después de guardar).
+   */
   constructor() {
-    // Carga los datos guardados cada vez que llegan de Identity (al entrar y después de guardar).
     effect(() => {
       const user = this.user.value();
 
@@ -75,6 +77,9 @@ export class ProfilePage {
     });
   }
 
+  /**
+   * Identity ya revocó las sesiones: se cierra la local y se vuelve a ingresar con la contraseña nueva.
+   */
   protected async changePassword(): Promise<void> {
     const changed = await firstValueFrom(
       this._dialog
@@ -83,7 +88,6 @@ export class ProfilePage {
     );
 
     if (changed) {
-      // Identity ya revocó las sesiones: se cierra la local y se vuelve a ingresar con la contraseña nueva.
       this._session.end();
       await this._router.navigate(['/auth/sign-in'], { queryParams: { notice: 'password' } });
     }

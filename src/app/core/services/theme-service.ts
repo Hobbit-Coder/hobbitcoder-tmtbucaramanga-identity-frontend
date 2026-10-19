@@ -4,7 +4,7 @@ import { LocalStorageService } from './local-storage-service';
 export type ThemePreference = 'system' | 'light' | 'dark';
 
 /**
- * Tema claro u oscuro (manual §11). La preferencia (Sistema, Claro u Oscuro) se guarda en este navegador y el
+ * Tema claro u oscuro. La preferencia (Sistema, Claro u Oscuro) se guarda en este navegador y el
  * tema efectivo se aplica en `<html data-theme>`, de donde lo leen los tokens, Material y Tailwind, incluidos
  * menús, diálogos y demás overlays.
  */

@@ -27,7 +27,7 @@ import { AuthService } from '@features/auth/services/auth-service';
 import { firstValueFrom } from 'rxjs';
 
 /**
- * Primer ingreso (HU-01, M15): el titular confirma su identidad con un código, crea su contraseña y completa
+ * Primer ingreso: el titular confirma su identidad con un código, crea su contraseña y completa
  * su perfil. La cuenta queda activa solo al guardar el último paso; antes de eso no hay sesión.
  */
 @Component({

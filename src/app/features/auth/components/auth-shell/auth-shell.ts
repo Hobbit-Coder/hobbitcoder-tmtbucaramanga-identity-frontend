@@ -4,7 +4,7 @@ import { BrandMark } from '@shared/components/brand-mark/brand-mark';
 import { ThemeToggle } from '@shared/components/theme-toggle/theme-toggle';
 
 /**
- * Contenedor de acceso (S01, M15): en escritorio, la marca negra con un mensaje breve a la izquierda y el
+ * Contenedor de acceso: en escritorio, la marca negra con un mensaje breve a la izquierda y el
  * formulario (máximo 400 px) a la derecha; en móvil, una columna con el logo. Ingreso, primer ingreso y
  * recuperación comparten este contenedor.
  */

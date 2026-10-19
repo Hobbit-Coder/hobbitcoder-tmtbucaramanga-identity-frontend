@@ -36,7 +36,7 @@ interface UserFilters {
 }
 
 /**
- * Usuarios (S10, M16): cuentas con filtros por rol, estado y texto; registro y edición en un panel lateral;
+ * Usuarios: cuentas con filtros por rol, estado y texto; registro y edición en un panel lateral;
  * solicitud de reinicio de contraseña, activación, desactivación y retiro. La usan el administrador y el
  * director; el director no ve ni asigna el rol Administrador.
  */

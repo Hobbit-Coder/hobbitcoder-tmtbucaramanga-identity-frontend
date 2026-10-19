@@ -35,7 +35,7 @@ export interface UserEditorData {
 }
 
 /**
- * Editor de cuentas (S10, M16): datos de la cuenta, rol, estado y el permiso para registrar asistentes. No
+ * Editor de cuentas: datos de la cuenta, rol, estado y el permiso para registrar asistentes. No
  * define contraseñas. Las responsabilidades en grupos se leen de Sheepfold y solo se muestran. Al guardar
  * se cierra con `true`.
  */

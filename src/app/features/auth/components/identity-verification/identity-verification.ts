@@ -15,7 +15,7 @@ interface VerificationModel {
 }
 
 /**
- * Confirmación de identidad del titular (§6): teléfono o usuario y el código recibido por WhatsApp (único
+ * Confirmación de identidad del titular: teléfono o usuario y el código recibido por WhatsApp (único
  * canal habilitado: los proveedores de WhatsApp de Identity no envían SMS).
  * Antes de pedir el código muestra "Enviar código"; después, el identificador en lectura y "Confirmar
  * identidad". El código es un solo campo que admite pegar; su longitud y vigencia las define Identity.
@@ -130,6 +130,9 @@ export class IdentityVerification {
     this.model.update((model) => ({ ...model, code: '' }));
   }
 
+  /**
+   * El campo del código aparece limpio: el envío anterior no debe marcarlo como error.
+   */
   private async submit(): Promise<void> {
     this.errorMessage.set(null);
     this.busy.set(true);
@@ -142,7 +145,6 @@ export class IdentityVerification {
           this._authService.startVerification(identifier.trim(), 'WhatsApp', this.purpose()),
         );
         this.codeSent.set(true);
-        // El campo del código aparece limpio: el envío anterior no debe marcarlo como error.
         this.verificationForm.code().reset();
         return;
       }

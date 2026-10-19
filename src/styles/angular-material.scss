@@ -1,5 +1,5 @@
-// Tema Material 3 con los roles del manual TMT. La paleta base solo aporta tonos derivados que no están en
-// el manual (estados intermedios); los roles visibles se reemplazan por los tokens de tokens.css, así que
+// Tema Material 3. La paleta base solo aporta tonos derivados que no son
+// roles definidos (estados intermedios); los roles visibles se reemplazan por los tokens de tokens.css, así que
 // Material y Tailwind comparten exactamente los mismos colores en claro y oscuro.
 @use '@angular/material' as mat;
 
@@ -42,7 +42,7 @@ html {
     )
   );
 
-  // Forma del manual §5: controles 12 px, tarjetas 16 px, diálogos y paneles 20 px.
+  // Forma: controles 12 px, tarjetas 16 px, diálogos y paneles 20 px.
   @include mat.button-overrides(
     (
       filled-container-shape: var(--tmt-radius-control),
@@ -97,7 +97,7 @@ html {
   );
 }
 
-// Panel lateral de edición (M16 "Editar usuario"): ocupa el alto a la derecha; en móvil, toda la pantalla.
+// Panel lateral de edición: ocupa el alto a la derecha; en móvil, toda la pantalla.
 .tmt-side-panel {
   @include mat.dialog-overrides(
     (

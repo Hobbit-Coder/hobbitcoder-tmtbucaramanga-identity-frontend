@@ -1,4 +1,13 @@
-import { Component, computed, effect, input, model, output, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  input,
+  model,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormValueControl, ValidationError } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -6,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInput, MatInputModule } from '@angular/material/input';
 
-/** Campo de contraseña con candado y botón para mostrarla u ocultarla (M15). Se usa con `[formField]`. */
+/** Campo de contraseña con candado y botón para mostrarla u ocultarla. Se usa con `[formField]`. */
 @Component({
   imports: [MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule],
   selector: 'app-password-input',
@@ -68,9 +77,11 @@ export class PasswordInput implements FormValueControl<string> {
 
   private readonly _input = viewChild.required(MatInput);
 
+  /**
+   * Material recalcula el error solo en su ngDoCheck; la plantilla no lee `touched` ni `invalid`, así que al
+   * tocar el campo o enviar el formulario no habría una nueva verificación. Se avisa explícitamente.
+   */
   constructor() {
-    // Material recalcula el error solo en su ngDoCheck; la plantilla no lee `touched` ni `invalid`, así que
-    // al tocar el campo o enviar el formulario no habría una nueva verificación. Se avisa explícitamente.
     effect(() => {
       this._showError();
       this._input().updateErrorState();

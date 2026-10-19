@@ -9,7 +9,7 @@ import { dayFromPicker, GENDER_LABELS, Gender, ROLE_LABELS, UserRole } from '@co
 import { ageOn, ProfileForm } from '@features/auth/models/profile-form';
 
 /**
- * Campos del perfil propio (§5): los usa el primer ingreso y Mi perfil. El rol y la edad se muestran en
+ * Campos del perfil propio: los usa el primer ingreso y Mi perfil. El rol y la edad se muestran en
  * lectura: el rol lo asigna la administración y la edad se calcula con la fecha de nacimiento.
  */
 @Component({

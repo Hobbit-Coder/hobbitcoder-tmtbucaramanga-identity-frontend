@@ -2,7 +2,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { Component, input } from '@angular/core';
 
 /**
- * Logo original de TMT sobre su placa negra (manual §2). No se recolorea ni se redibuja: en ambos temas se
+ * Logo original de TMT sobre su placa negra. No se recolorea ni se redibuja: en ambos temas se
  * muestra el mismo archivo.
  */
 @Component({

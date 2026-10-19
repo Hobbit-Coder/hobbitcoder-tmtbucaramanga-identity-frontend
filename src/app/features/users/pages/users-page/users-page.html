@@ -67,7 +67,6 @@
           <p class="tmt-meta m-0">Cambia el rol, el estado o el texto de búsqueda.</p>
         </div>
       } @else {
-        <!-- Escritorio: tabla. -->
         <div
           class="hidden overflow-x-auto rounded-[var(--tmt-radius-card)] border border-border-subtle md:block"
         >
@@ -117,7 +116,6 @@
           </table>
         </div>
 
-        <!-- Móvil: tarjetas. -->
         <ul class="m-0 flex list-none flex-col gap-2 p-0 md:hidden">
           @for (user of result.items; track user.id) {
             <li class="tmt-card flex items-center gap-3 p-3">

@@ -10,7 +10,7 @@ import { SidebarComponent } from '@shared/components/sidebar-component/sidebar-c
 import { map } from 'rxjs';
 
 /**
- * Layout con sesión (manual §6): menú lateral fijo de 224 px desde 960 px; en pantallas menores, barra
+ * Layout con sesión: menú lateral fijo de 224 px desde 960 px; en pantallas menores, barra
  * superior con la marca y el menú como panel superpuesto que se cierra al elegir una opción.
  */
 @Component({
@@ -60,7 +60,7 @@ import { map } from 'rxjs';
   `,
 })
 export class ClassyLayout {
-  /** Menos de 960 px (punto de adaptación "md" del manual). */
+  /** Menos de 960 px (punto de adaptación "md"). */
   protected readonly compact = toSignal(
     inject(BreakpointObserver)
       .observe('(max-width: 59.98rem)')

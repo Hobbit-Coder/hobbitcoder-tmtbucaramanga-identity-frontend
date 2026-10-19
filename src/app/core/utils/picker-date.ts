@@ -1,11 +1,12 @@
 const pad = (value: number) => String(value).padStart(2, '0');
 
-/*
+/**
+ * `Date` del selector para un día `yyyy-MM-dd`; `null` si no hay día.
+ *
+ * @remarks
  * Valores del selector de fecha de Material. El adaptador nativo trabaja con `Date` en la zona del navegador,
  * así que el día viaja en componentes locales: lo elegido es exactamente el día escrito, sin conversión de zona.
  */
-
-/** `Date` del selector para un día `yyyy-MM-dd`; `null` si no hay día. */
 export function pickerDate(day: string | null | undefined): Date | null {
   if (!day) {
     return null;

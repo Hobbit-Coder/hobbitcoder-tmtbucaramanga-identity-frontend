@@ -45,8 +45,10 @@ export class AccessTokenService {
     return refresh;
   }
 
+  /**
+   * Una renovación anterior de la cola pudo dejar listo el token de esta audiencia.
+   */
   private async refresh(audience: string): Promise<string> {
-    // Una renovación anterior de la cola pudo dejar listo el token de esta audiencia.
     const accessToken = this._session.accessToken(audience);
     if (accessToken !== null) {
       return accessToken;

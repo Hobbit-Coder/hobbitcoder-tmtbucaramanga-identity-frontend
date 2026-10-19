@@ -14,19 +14,25 @@ export abstract class BrowserStorage {
     }
   }
 
+  /**
+   * Sin almacenamiento disponible: el valor solo vive en memoria de quien lo usa.
+   */
   public set(key: string, value: string): void {
     try {
       this.storage()?.setItem(key, value);
     } catch {
-      // Sin almacenamiento disponible: el valor solo vive en memoria de quien lo usa.
+      return;
     }
   }
 
+  /**
+   * Nada que borrar si el almacenamiento no está disponible.
+   */
   public remove(key: string): void {
     try {
       this.storage()?.removeItem(key);
     } catch {
-      // Nada que borrar si el almacenamiento no está disponible.
+      return;
     }
   }
 }

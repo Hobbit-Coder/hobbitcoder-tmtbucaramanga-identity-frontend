@@ -45,7 +45,7 @@ export function toUserData(form: UserForm): UserData {
 }
 
 /**
- * Reglas de Identity al registrar o editar una cuenta (§4.5): nombres, teléfono, usuario y rol son
+ * Reglas de Identity al registrar o editar una cuenta: nombres, teléfono, usuario y rol son
  * obligatorios; género, Instagram y nacimiento los completa el titular al activar su cuenta.
  */
 export function userRules(path: SchemaPathTree<UserForm>, today: () => Date): void {

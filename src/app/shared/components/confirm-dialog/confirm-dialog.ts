@@ -16,7 +16,7 @@ export interface ConfirmDialogData {
 }
 
 /**
- * Confirmación de una acción sensible (M16 "Solicitar reinicio de contraseña", retiro, desactivación).
+ * Confirmación de una acción sensible (reinicio de contraseña, retiro, desactivación).
  * Devuelve `true` al confirmar. Cancelar es siempre la opción por defecto del foco.
  */
 @Component({

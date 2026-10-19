@@ -9,7 +9,7 @@ import {
 import { dayFromPicker, Gender, pickerDate, ProfileData, UserProfile } from '@core/index';
 
 /**
- * Perfil editable (§5) tal como lo maneja el formulario: textos vacíos en lugar de null para que los campos
+ * Perfil editable tal como lo maneja el formulario: textos vacíos en lugar de null para que los campos
  * los editen y la fecha como `Date` del selector de Material. `toProfileData` lo vuelve a la forma que espera Identity.
  */
 export interface ProfileForm {
@@ -81,7 +81,7 @@ export function ageOn(birthDate: string, today: Date): number | null {
 }
 
 /**
- * Reglas del perfil (HU-01): todo es obligatorio menos el correo. Son las mismas de Identity: usuario de 3 a
+ * Reglas del perfil: todo es obligatorio menos el correo. Son las mismas de Identity: usuario de 3 a
  * 50 caracteres con al menos una letra y sin `@`, teléfono de 8 a 15 dígitos (10 dígitos se toman como de Colombia) y nacimiento no futuro.
  */
 export function profileRules(path: SchemaPathTree<ProfileForm>, today: () => Date): void {

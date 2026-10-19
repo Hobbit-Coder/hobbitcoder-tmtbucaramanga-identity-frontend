@@ -1,4 +1,4 @@
-/* Estilos globales: base tipográfica del manual (§4), foco visible (§10) y piezas visuales reutilizadas por
+/* Estilos globales: base tipográfica, foco visible y piezas visuales reutilizadas por
    varias pantallas (tarjetas, etiquetas de estado, avatares). La composición va con Tailwind. */
 @use 'styles/angular-material.scss';
 
@@ -26,7 +26,7 @@ body {
   }
 }
 
-/* Foco visible: anillo de 2 px separado 2 px (§3 "focus"). */
+/* Foco visible: anillo de 2 px separado 2 px. */
 :focus-visible {
   outline: 2px solid var(--tmt-focus);
   outline-offset: 2px;
@@ -57,7 +57,7 @@ a {
     width: 100%;
   }
 
-  /* Tipografía de pantalla (§4): 32/40 escritorio, 24/32 móvil. */
+  /* Tipografía de pantalla: 32/40 escritorio, 24/32 móvil. */
   .tmt-page-title {
     margin: 0;
     font-size: 1.5rem;
@@ -178,7 +178,7 @@ a {
     font-size: 0.875rem;
   }
 
-  /* Placa negra de marca (§2): conserva el logo original sin recolorear. */
+  /* Placa negra de marca: conserva el logo original sin recolorear. */
   .tmt-brand-plate {
     display: inline-flex;
     align-items: center;
@@ -189,7 +189,7 @@ a {
     flex: none;
   }
 
-  /* Opción del menú lateral (M16): ícono + texto; la activa con el fondo de selección. */
+  /* Opción del menú lateral: ícono + texto; la activa con el fondo de selección. */
   .tmt-nav-link {
     display: flex;
     align-items: center;

@@ -13,7 +13,7 @@ import { AuthService } from '@features/auth/services/auth-service';
 import { firstValueFrom } from 'rxjs';
 
 /**
- * Ingreso (S01, M15) con teléfono, nombre de usuario o correo registrado. Al entrar vuelve a `returnUrl`
+ * Ingreso con teléfono, nombre de usuario o correo registrado. Al entrar vuelve a `returnUrl`
  * (por ejemplo, a autorizar a Sheepfold). Desde aquí se llega al primer ingreso y a la recuperación.
  */
 @Component({
@@ -68,7 +68,7 @@ export class SignInPage {
 
   /**
    * Identity responde 401 sin distinguir el motivo (credenciales, pendiente de activar o bloqueada), para no
-   * revelar qué cuentas existen. Solo con la contraseña correcta de una cuenta desactivada responde 403 (HU-02).
+   * revelar qué cuentas existen. Solo con la contraseña correcta de una cuenta desactivada responde 403.
    */
   private toSignInErrorMessage(problem: ProblemDetails): string {
     switch (problem.status) {

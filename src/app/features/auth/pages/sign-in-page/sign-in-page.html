@@ -2,7 +2,6 @@
   <h1 class="tmt-page-title md:text-[2.5rem]! md:leading-[3rem]!">Bienvenido a TMT</h1>
   <p class="tmt-page-subtitle">Ingresa para continuar.</p>
 
-  <!-- El aviso de éxito se oculta si el ingreso falla, para no mostrar mensajes contradictorios. -->
   @if (!errorMessage()) {
     @switch (notice()) {
       @case ('activated') {

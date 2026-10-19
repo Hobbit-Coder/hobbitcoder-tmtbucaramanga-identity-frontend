@@ -1,5 +1,5 @@
 /**
- * Roles que Identity emite en el claim `role` del token (§3.1): uno por cuenta, con los mismos nombres en
+ * Roles que Identity emite en el claim `role` del token: uno por cuenta, con los mismos nombres en
  * Identity y en Sheepfold.
  */
 export const Role = {

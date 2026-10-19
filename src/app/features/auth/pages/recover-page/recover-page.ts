@@ -18,7 +18,7 @@ import { AuthService } from '@features/auth/services/auth-service';
 import { firstValueFrom } from 'rxjs';
 
 /**
- * Recuperar acceso (HU-02, M15): el titular confirma su identidad con un código y crea una contraseña nueva.
+ * Recuperar acceso: el titular confirma su identidad con un código y crea una contraseña nueva.
  * Sirve también cuando la administración solicitó el reinicio. Identity cierra las sesiones abiertas.
  */
 @Component({

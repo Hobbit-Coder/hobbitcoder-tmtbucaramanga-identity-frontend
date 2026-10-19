@@ -1,5 +1,5 @@
 /*
- * Tokens de diseño TMT (manual UI/UX §3). Un mismo archivo en Identity y en Sheepfold: cada rol tiene un
+ * Tokens de diseño TMT. Un mismo archivo en Identity y en Sheepfold: cada rol tiene un
  * único responsable y Material y Tailwind lo leen de aquí. El tema efectivo lo pone ThemeService en
  * <html data-theme="light|dark">.
  */
@@ -27,7 +27,7 @@
   --tmt-focus: #0f766e;
   --tmt-scrim: rgb(23 25 29 / 40%);
 
-  /* Identidad de generaciones (§3): trazo decorativo y pareja texto/fondo. */
+  /* Identidad de generaciones: trazo decorativo y pareja texto/fondo. */
   --tmt-pulso-stroke: #f26d72;
   --tmt-pulso-text: #9d2b40;
   --tmt-pulso-bg: #fdecef;

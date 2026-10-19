@@ -10,7 +10,7 @@ export interface GetUsersRequest {
 }
 
 /**
- * Cuerpo de `POST /api/users` y `PUT /api/users/{id}` (§4.5). No lleva contraseña: el titular la crea al
+ * Cuerpo de `POST /api/users` y `PUT /api/users/{id}`. No lleva contraseña: el titular la crea al
  * activar su cuenta y la administración solo puede solicitar el reinicio.
  */
 export interface UserData {
@@ -24,7 +24,7 @@ export interface UserData {
   birthDate: string | null;
   role: UserRole;
   isActive: boolean;
-  /** Permiso adicional para registrar asistentes nuevos; no amplía el alcance de edición (§3.2). */
+  /** Permiso adicional para registrar asistentes nuevos; no amplía el alcance de edición. */
   canRegisterAttendees: boolean;
 }
 

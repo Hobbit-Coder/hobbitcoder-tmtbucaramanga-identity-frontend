@@ -17,13 +17,16 @@ import { routes } from './app.routes';
 
 registerLocaleData(localeEsCo);
 
+/**
+ * Configuración de la aplicación. Los interceptores HTTP se ejecutan en orden: los errores globales se avisan con el
+ * resultado final (después del reintento), la actividad cuenta también la renovación del token, y
+ * `refreshTokenInterceptor` va antes que `jwtInterceptor` para que su reintento vuelva a pasar por él. La
+ * localización es español de Colombia con íconos Material Symbols Outlined.
+ */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
-    // Orden: los errores globales se avisan con el resultado final (después del reintento), la
-    // actividad cuenta también la renovación del token, y refreshTokenInterceptor va antes que
-    // jwtInterceptor para que su reintento vuelva a pasar por él.
     provideHttpClient(
       withInterceptors([
         httpErrorInterceptor,
@@ -32,7 +35,6 @@ export const appConfig: ApplicationConfig = {
         jwtInterceptor,
       ]),
     ),
-    // Español de Colombia para fechas y números (manual §8) e íconos Material Symbols Outlined (§7).
     { provide: LOCALE_ID, useValue: 'es-CO' },
     { provide: MAT_ICON_DEFAULT_OPTIONS, useValue: { fontSet: 'material-symbols-outlined' } },
     // Selector de fecha de Material (mat-datepicker).

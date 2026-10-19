@@ -5,8 +5,8 @@
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 /*
- * Alias semánticos hacia los tokens del manual: las utilidades (bg-surface, text-secondary...) siguen el
- * tema sin duplicar colores. Puntos de adaptación del manual §6: 600, 960, 1280 y 1920 px.
+ * Alias semánticos hacia los tokens: las utilidades (bg-surface, text-secondary...) siguen el
+ * tema sin duplicar colores. Puntos de adaptación: 600, 960, 1280 y 1920 px.
  */
 @theme inline {
   --breakpoint-sm: 37.5rem;

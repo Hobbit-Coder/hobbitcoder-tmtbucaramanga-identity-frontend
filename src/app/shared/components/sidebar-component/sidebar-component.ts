@@ -12,7 +12,7 @@ import { NavigationItem } from '@shared/models/navigation-item';
 import { CurrentUserStore } from '@shared/services/current-user-store';
 
 /**
- * Menú lateral (M16): marca, opciones según el rol y la cuenta actual con el tema y el cierre de sesión.
+ * Menú lateral: marca, opciones según el rol y la cuenta actual con el tema y el cierre de sesión.
  * Configuración y Registros retirados viven en Sheepfold; el administrador solo ve ahí catálogos y cuentas.
  */
 @Component({

@@ -17,7 +17,7 @@ export interface AuthorizeResponse {
   redirectUri: string;
 }
 
-/** Datos de `POST /api/auth/login`: teléfono, nombre de usuario o correo registrado (§6). */
+/** Datos de `POST /api/auth/login`: teléfono, nombre de usuario o correo registrado. */
 export interface LoginCredentials {
   identifier: string;
   password: string;
@@ -71,7 +71,7 @@ export interface UserProfile {
   deletedAt: string | null;
 }
 
-/** Perfil que el titular completa al activar su cuenta o edita en Mi perfil (§5). */
+/** Perfil que el titular completa al activar su cuenta o edita en Mi perfil. */
 export interface ProfileData {
   firstName: string;
   lastName: string;
