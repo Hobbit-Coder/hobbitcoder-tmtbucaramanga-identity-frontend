@@ -8,6 +8,7 @@ export const Role = {
   Coordinator: 'Coordinator',
   Leader: 'Leader',
   Apprentice: 'Apprentice',
+  Sniper: 'Sniper',
 } as const;
 
 export type UserRole = (typeof Role)[keyof typeof Role];
@@ -21,6 +22,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   Coordinator: 'Coordinador',
   Leader: 'Líder',
   Apprentice: 'Aprendiz',
+  Sniper: 'Sniper',
 };
 
 export type Gender = 'Female' | 'Male';

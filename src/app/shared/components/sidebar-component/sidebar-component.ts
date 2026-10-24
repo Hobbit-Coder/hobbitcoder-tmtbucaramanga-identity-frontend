@@ -95,7 +95,13 @@ export class SidebarComponent {
   private readonly _userRoles = inject(UserRolesService);
   private readonly _auth = inject(AuthService);
   private readonly _sheepfold = environment.sheepfoldUrl;
-  private readonly _ministryRoles = [Role.Director, Role.Coordinator, Role.Leader, Role.Apprentice];
+  private readonly _ministryRoles = [
+    Role.Director,
+    Role.Coordinator,
+    Role.Leader,
+    Role.Apprentice,
+    Role.Sniper,
+  ];
 
   private readonly _items: readonly NavigationItem[] = [
     {
