@@ -80,9 +80,11 @@ html {
       content-background-color: var(--tmt-canvas),
     )
   );
+  // Misma altura que los demás controles (48 px), también en los grupos de alternancia.
   @include mat.button-toggle-overrides(
     (
       shape: var(--tmt-radius-control),
+      height: 48px,
     )
   );
 }
@@ -110,5 +112,38 @@ html {
       border-top-left-radius: var(--tmt-radius-panel);
       border-bottom-left-radius: var(--tmt-radius-panel);
     }
+  }
+
+  // Entra y sale por el borde derecho, donde vive, con la curva de cajón; no escala desde el centro como un
+  // diálogo. Al salir no se desvanece: se ve deslizarse hasta el borde.
+  @media (prefers-reduced-motion: no-preference) {
+    .mdc-dialog--closing .mat-mdc-dialog-inner-container {
+      opacity: 1;
+    }
+
+    // Animación y no transición: el panel se mide antes de recibir esta clase y la transición arrancaría desde
+    // el `scale(0.8)` de Material.
+    .mdc-dialog--opening .mat-mdc-dialog-surface {
+      animation: tmt-side-panel-in var(--mat-dialog-transition-duration)
+        cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .mdc-dialog--closing .mat-mdc-dialog-surface {
+      transform: translateX(100%);
+      transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+    }
+  }
+}
+
+@keyframes tmt-side-panel-in {
+  from {
+    transform: translateX(100%);
+  }
+}
+
+// Con movimiento reducido los diálogos solo se funden, sin escalar ni deslizarse.
+@media (prefers-reduced-motion: reduce) {
+  .mat-mdc-dialog-surface {
+    transform: none !important;
   }
 }

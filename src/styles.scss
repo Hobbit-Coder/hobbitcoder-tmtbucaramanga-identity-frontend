@@ -17,12 +17,15 @@ body {
   transition: background-color 200ms ease;
 }
 
+/* Movimiento reducido: sin animaciones en bucle ni desplazamientos. Los fundidos cortos se conservan porque
+   ayudan a entender los cambios; paneles y diálogos se ajustan en angular-material.scss. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -189,6 +192,42 @@ a {
     flex: none;
   }
 
+  /* Enlace para saltar al contenido: visible solo con el foco del teclado. */
+  .tmt-skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    border-radius: var(--tmt-radius-control);
+    background: var(--tmt-primary);
+    color: var(--tmt-on-primary);
+
+    &:focus {
+      top: 1rem;
+    }
+  }
+  /* Navegación inferior en móvil: ícono y texto, 56 px de alto. */
+  .tmt-bottom-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.125rem;
+    min-height: 3.5rem;
+    border: 0;
+    background: none;
+    color: var(--tmt-text-secondary);
+    font: inherit;
+    font-size: 0.75rem;
+    text-decoration: none;
+    cursor: pointer;
+
+    &.is-active {
+      color: var(--tmt-primary);
+      font-weight: 600;
+    }
+  }
   /* Opción del menú lateral: ícono + texto; la activa con el fondo de selección. */
   .tmt-nav-link {
     display: flex;
@@ -201,7 +240,14 @@ a {
     font-size: 0.9375rem;
     text-decoration: none;
 
-    &:hover {
+    /* En táctil el hover se queda pegado; al presionar, el fondo responde al instante. */
+    @media (hover: hover) {
+      &:hover {
+        background: var(--tmt-surface-subtle);
+      }
+    }
+
+    &:active {
       background: var(--tmt-surface-subtle);
     }
 
@@ -260,26 +306,17 @@ a {
     }
   }
 
+  /* Esqueleto: bloque plano con la geometría final; late suave mientras carga, sin brillo que lo recorra. */
   .tmt-skeleton {
     border-radius: 8px;
-    background: linear-gradient(
-      90deg,
-      var(--tmt-surface-subtle) 25%,
-      var(--tmt-border-subtle) 50%,
-      var(--tmt-surface-subtle) 75%
-    );
-    background-size: 200% 100%;
-    animation: tmt-skeleton 1.4s ease-in-out infinite;
+    background: var(--tmt-surface-subtle);
+    animation: tmt-skeleton 1.6s ease-in-out infinite;
   }
 }
 
 @keyframes tmt-skeleton {
-  from {
-    background-position: 200% 0;
-  }
-
-  to {
-    background-position: -200% 0;
+  50% {
+    opacity: 0.55;
   }
 }
 
