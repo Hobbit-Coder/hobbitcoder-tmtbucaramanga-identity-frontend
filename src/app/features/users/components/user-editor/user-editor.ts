@@ -148,7 +148,8 @@ export interface UserEditorData {
           >
         </div>
         <p id="can-register-hint" class="tmt-meta m-0 mt-1 pl-[3.25rem]">
-          No amplía el alcance de edición.
+          Puede asignarlos o trasladarlos a cualquier grupo activo del año, sin ampliar qué
+          asistentes consulta o edita.
         </p>
 
         @if (errorMessage(); as message) {
