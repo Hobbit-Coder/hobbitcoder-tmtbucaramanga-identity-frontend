@@ -15,7 +15,6 @@ export class ThemeService {
   private readonly _media = globalThis.matchMedia?.('(prefers-color-scheme: dark)');
 
   public readonly preference = signal<ThemePreference>(this.read());
-  public readonly isDark = signal(false);
 
   constructor() {
     const onSystemChange = () => this.apply();
@@ -31,17 +30,11 @@ export class ThemeService {
     this.apply();
   }
 
-  /** Alterna entre claro y oscuro (botón de la barra superior). */
-  public toggle(): void {
-    this.set(this.isDark() ? 'light' : 'dark');
-  }
-
   private apply(): void {
     const preference = this.preference();
     const dark =
       preference === 'dark' || (preference === 'system' && this._media?.matches === true);
 
-    this.isDark.set(dark);
     globalThis.document?.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
   }
 
