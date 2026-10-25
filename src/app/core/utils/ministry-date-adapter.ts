@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MAT_NATIVE_DATE_FORMATS, MatDateFormats, NativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
 
 const TIME_24H: Intl.DateTimeFormatOptions = {
   hour: '2-digit',
@@ -44,4 +45,20 @@ export class MinistryDateAdapter extends NativeDateAdapter {
 
     return date.getMonth() === month - 1 ? date : this.invalid();
   }
+}
+
+/** Textos de los selectores de fecha para lectores de pantalla; Material los trae en inglés. */
+@Injectable()
+export class MinistryDatepickerIntl extends MatDatepickerIntl {
+  public override calendarLabel = 'Calendario';
+  public override openCalendarLabel = 'Abrir calendario';
+  public override closeCalendarLabel = 'Cerrar calendario';
+  public override prevMonthLabel = 'Mes anterior';
+  public override nextMonthLabel = 'Mes siguiente';
+  public override prevYearLabel = 'Año anterior';
+  public override nextYearLabel = 'Año siguiente';
+  public override prevMultiYearLabel = 'Años anteriores';
+  public override nextMultiYearLabel = 'Años siguientes';
+  public override switchToMonthViewLabel = 'Elegir fecha';
+  public override switchToMultiYearViewLabel = 'Elegir mes y año';
 }

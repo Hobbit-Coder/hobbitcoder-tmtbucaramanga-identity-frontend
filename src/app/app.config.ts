@@ -3,6 +3,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import localeEsCo from '@angular/common/locales/es-CO';
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import {
@@ -11,6 +12,7 @@ import {
   jwtInterceptor,
   MINISTRY_DATE_FORMATS,
   MinistryDateAdapter,
+  MinistryDatepickerIntl,
   refreshTokenInterceptor,
 } from '@core/index';
 import { routes } from './app.routes';
@@ -40,5 +42,6 @@ export const appConfig: ApplicationConfig = {
     // Selector de fecha de Material (mat-datepicker).
     { provide: DateAdapter, useClass: MinistryDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: MINISTRY_DATE_FORMATS },
+    { provide: MatDatepickerIntl, useClass: MinistryDatepickerIntl },
   ],
 };
