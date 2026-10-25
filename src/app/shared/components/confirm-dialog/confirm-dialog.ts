@@ -11,6 +11,8 @@ export interface ConfirmDialogData {
   detail?: string;
   message: string;
   confirmLabel: string;
+  /** Texto del botón que no hace nada; "Cancelar" si se omite. */
+  cancelLabel?: string;
   /** `danger` para acciones que retiran o eliminan. */
   tone?: 'default' | 'danger';
 }
@@ -56,7 +58,9 @@ export interface ConfirmDialogData {
       </mat-dialog-content>
     </div>
     <mat-dialog-actions class="grid! grid-cols-2 gap-3 border-t border-border-subtle px-6! pb-6!">
-      <button mat-stroked-button type="button" mat-dialog-close cdkFocusInitial>Cancelar</button>
+      <button mat-stroked-button type="button" mat-dialog-close cdkFocusInitial>
+        {{ data.cancelLabel ?? 'Cancelar' }}
+      </button>
       <button
         mat-flat-button
         type="button"

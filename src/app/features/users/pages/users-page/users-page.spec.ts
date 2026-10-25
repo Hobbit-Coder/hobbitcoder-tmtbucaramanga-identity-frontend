@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PagedResult, UserProfile, UserRolesService } from '@core/index';
 import { UserService } from '@features/users/services/user-service';
 import { CurrentUserStore } from '@shared/services/current-user-store';
+import { PanelService } from '@shared/services/panel-service';
 import { of } from 'rxjs';
 import { UsersPage } from './users-page';
 
@@ -45,7 +45,7 @@ describe('UsersPage', () => {
     update: vi.fn(() => of(undefined)),
   };
   const snackBar = vi.fn();
-  const dialogResult = vi.fn(() => of(true));
+  const dialogResult = vi.fn(() => Promise.resolve<boolean | undefined>(true));
   let isAdmin = true;
   let fixture: ComponentFixture<UsersPage>;
   let element: HTMLElement;
@@ -55,7 +55,7 @@ describe('UsersPage', () => {
       imports: [UsersPage],
       providers: [
         { provide: UserService, useValue: users },
-        { provide: MatDialog, useValue: { open: vi.fn(() => ({ afterClosed: dialogResult })) } },
+        { provide: PanelService, useValue: { dialog: dialogResult, open: vi.fn() } },
         { provide: MatSnackBar, useValue: { open: snackBar } },
         {
           provide: UserRolesService,
@@ -138,7 +138,7 @@ describe('UsersPage', () => {
   });
 
   it('sin confirmar no aplica la acción', async () => {
-    dialogResult.mockReturnValueOnce(of(undefined as unknown as boolean));
+    dialogResult.mockReturnValueOnce(Promise.resolve(undefined));
     await setup();
 
     await (fixture.componentInstance as unknown as Actions).retire(user);

@@ -196,6 +196,11 @@ export class UserEditor {
       this._users.getResponsibilities(params).pipe(catchError(() => of(undefined))),
   });
 
+  /** Escape o un clic fuera piden confirmación si hay cambios sin guardar (ver PanelService). */
+  public hasUnsavedChanges(): boolean {
+    return this.userForm().dirty();
+  }
+
   private async save(): Promise<void> {
     this.errorMessage.set(null);
 

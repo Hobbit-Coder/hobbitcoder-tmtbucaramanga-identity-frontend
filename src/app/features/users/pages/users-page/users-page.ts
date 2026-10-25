@@ -4,7 +4,6 @@ import { Component, computed, inject, linkedSignal, signal } from '@angular/core
 import { rxResource } from '@angular/core/rxjs-interop';
 import { debounce, form, FormField } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -25,6 +24,7 @@ import { toUserData, toUserForm } from '@features/users/models';
 import { UserService } from '@features/users/services/user-service';
 import { ConfirmDialog, ConfirmDialogData } from '@shared/components/confirm-dialog/confirm-dialog';
 import { CurrentUserStore } from '@shared/services/current-user-store';
+import { PanelService } from '@shared/services/panel-service';
 import { firstValueFrom, Observable } from 'rxjs';
 
 type StatusFilter = 'all' | 'active' | 'inactive';
@@ -56,7 +56,7 @@ interface UserFilters {
 })
 export class UsersPage {
   private readonly _users = inject(UserService);
-  private readonly _dialog = inject(MatDialog);
+  private readonly _panels = inject(PanelService);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _userRoles = inject(UserRolesService);
   private readonly _currentUser = inject(CurrentUserStore);
@@ -114,6 +114,17 @@ export class UsersPage {
 
   protected initials(user: UserProfile): string {
     return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+  }
+
+  /** Un solo estado por cuenta: inactiva, con el acceso pendiente o activa. */
+  protected status(user: UserProfile): { label: string; tone: string } {
+    if (!user.isActive) {
+      return { label: 'Inactivo', tone: '' };
+    }
+
+    return user.accessStatus && user.accessStatus !== 'Ready'
+      ? { label: this.accessLabels[user.accessStatus], tone: 'is-warning' }
+      : { label: 'Activo', tone: 'is-success' };
   }
 
   /** El director no administra cuentas Administrador; nadie se desactiva ni se retira a sí mismo. */
@@ -191,11 +202,7 @@ export class UsersPage {
   }
 
   private confirm(data: ConfirmDialogData): Promise<boolean | undefined> {
-    return firstValueFrom(
-      this._dialog
-        .open(ConfirmDialog, { data, width: '26rem', maxWidth: 'calc(100vw - 2rem)' })
-        .afterClosed(),
-    );
+    return this._panels.dialog<ConfirmDialog, ConfirmDialogData, boolean>(ConfirmDialog, data, 416);
   }
 
   private async run(request: Observable<void>, successMessage: string): Promise<void> {
@@ -216,19 +223,10 @@ export class UsersPage {
 
   private async openEditor(user: UserProfile | null, successMessage: string): Promise<void> {
     const data: UserEditorData = { user, roles: this.roles() };
-    const saved = await firstValueFrom(
-      this._dialog
-        .open(UserEditor, {
-          data,
-          width: '640px',
-          maxWidth: '100vw',
-          height: '100%',
-          maxHeight: '100dvh',
-          position: { right: '0', top: '0' },
-          panelClass: 'tmt-side-panel',
-          autoFocus: 'first-tabbable',
-        })
-        .afterClosed(),
+    const saved = await this._panels.open<UserEditor, UserEditorData, boolean>(
+      UserEditor,
+      data,
+      640,
     );
 
     if (saved) {
