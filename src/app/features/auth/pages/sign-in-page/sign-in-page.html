@@ -1,6 +1,5 @@
 <app-auth-shell>
-  <h1 class="tmt-page-title md:text-[2.5rem]! md:leading-[3rem]!">Bienvenido a TMT</h1>
-  <p class="tmt-page-subtitle">Ingresa para continuar.</p>
+  <h1 class="tmt-page-title md:text-[2.5rem]! md:leading-[3rem]!">Ingresa a TMT</h1>
 
   @if (!errorMessage()) {
     @switch (notice()) {
@@ -42,7 +41,6 @@
 
     <button mat-flat-button type="submit" class="h-12!" [disabled]="signInForm().submitting()">
       Ingresar
-      <mat-icon iconPositionEnd>arrow_forward</mat-icon>
     </button>
   </form>
 
