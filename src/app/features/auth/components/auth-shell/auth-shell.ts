@@ -23,11 +23,11 @@ import { ThemeToggle } from '@shared/components/theme-toggle/theme-toggle';
             aria-hidden="true"
           >
             <img
-              ngSrc="brand/logo-tmt.jpeg"
+              ngSrc="brand/logo-tmt-440.jpeg"
               width="220"
               height="220"
               alt=""
-              class="-ml-6"
+              class="-ml-1"
               priority
             />
             <span class="h-0.5 w-12 bg-[#5eead4]"></span>

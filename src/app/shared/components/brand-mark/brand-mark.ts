@@ -11,7 +11,7 @@ import { Component, input } from '@angular/core';
   template: `
     <span class="tmt-brand-plate" [style.width.px]="size()" [style.height.px]="size()">
       <img
-        ngSrc="brand/logo-tmt.jpeg"
+        ngSrc="brand/logo-tmt-144.jpeg"
         [width]="size()"
         [height]="size()"
         [alt]="decorative() ? '' : 'TMT'"
