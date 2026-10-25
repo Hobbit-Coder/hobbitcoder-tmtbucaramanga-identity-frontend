@@ -169,6 +169,8 @@ export class IdentityVerification {
           : 'Revisa el teléfono o el nombre de usuario.';
       case HttpStatusCode.ServiceUnavailable:
         return 'No fue posible enviar el código por WhatsApp en este momento. Intenta más tarde.';
+      case HttpStatusCode.TooManyRequests:
+        return 'Demasiados intentos. Espera un minuto e inténtalo de nuevo.';
       case 0:
         return 'No fue posible conectar con el servidor. Intenta de nuevo.';
       default:

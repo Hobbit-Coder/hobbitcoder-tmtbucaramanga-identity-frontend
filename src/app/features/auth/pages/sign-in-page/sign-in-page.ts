@@ -76,6 +76,8 @@ export class SignInPage {
         return 'Los datos de ingreso no son válidos. Si es tu primer ingreso, activa tu cuenta.';
       case HttpStatusCode.Forbidden:
         return 'Tu acceso no está disponible. Comunícate con la administración del ministerio.';
+      case HttpStatusCode.TooManyRequests:
+        return 'Demasiados intentos. Espera un minuto e inténtalo de nuevo.';
       case 0:
         return 'No fue posible conectar con el servidor. Intenta de nuevo.';
       default:
